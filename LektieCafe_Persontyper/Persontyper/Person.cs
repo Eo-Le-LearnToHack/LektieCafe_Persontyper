@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace NPersontyper
 {
+    public delegate void Vigtighed();
     internal class Person
     {
         public string? Navn { get; set; }
@@ -75,10 +76,15 @@ namespace NPersontyper
         {
             Console.WriteLine(Besked.førstePerson.ToUpper() + "\n");
             personX = new Person(); //Create an object of each person in the array  
-            personX.NavnTildelt();
-            personX.TidTildelt();
-            personX.BæredygtighedTildelt();
-            personX.ØkonomiTildelt();
+            Vigtighed personVigtighed = new Vigtighed(personX.NavnTildelt);
+            personVigtighed += personX.TidTildelt;
+            personVigtighed += personX.BæredygtighedTildelt;
+            personVigtighed += personX.ØkonomiTildelt;
+            //personX.NavnTildelt();
+            //personX.TidTildelt();
+            //personX.BæredygtighedTildelt();
+            //personX.ØkonomiTildelt();
+            personVigtighed();
             Counter.person++;
             Counter.index++;
             return personX;
