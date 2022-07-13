@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Persontyper
+namespace NPersontyper
 {
     internal class Person
     {
@@ -63,10 +63,17 @@ namespace Persontyper
         }
 
 
+        public static void AddFirstPerson()
+        {
+            Person.person = new Person[Counter.person];
+            Person.person[Counter.index] = new Person();
+            Person.person[Counter.index] = Person.InstantiateAPerson(Person.person[Counter.index]); //Opret første person
+            Console.ReadLine();
+        }
 
         public static Person InstantiateAPerson(Person personX)
         {
-            Console.WriteLine("Opret første person.");
+            Console.WriteLine(Besked.førstePerson.ToUpper() + "\n");
             personX = new Person(); //Create an object of each person in the array  
             personX.NavnTildelt();
             personX.TidTildelt();
@@ -79,42 +86,76 @@ namespace Persontyper
 
         public static void InstantiateResizePerson()
         {
-            Array.Resize<Person>(ref Person.person, Counter.person);
+            Array.Resize<Person>(ref Person.person, Counter.person); //Resize<T>(ref T[] ? array, int newSize); https://docs.microsoft.com/en-us/dotnet/api/system.array.resize?view=net-6.0
             Person.person[Counter.index] = new Person();
         }
  
 
         public static Person InstantiateAnExtraPerson(Person personX)
         {
-            //Array.Resize<Person>(ref Person.person, Counter.person);
-            //Person.person[Counter.index] = new Person();
+            Console.Clear();
+            Console.WriteLine($"Tilføj person nr. {Counter.person}.");
             personX.NavnTildelt();
             personX.TidTildelt();
             personX.BæredygtighedTildelt();
             personX.ØkonomiTildelt();
             Counter.person++;
             Counter.index++;
+            Console.ReadLine();
             return personX;
         }
 
-        public static void PersonUdskriv()
+        public static void AddMorePeople()
+        {
+            do
+            {
+                Console.Clear();
+                string? userChoice = Validering.AddPersonStartOverOrQuit();
+                if (userChoice.ToLower() == Value.validText[3, 0].ToLower()) //luk
+                {
+                    Loop.mainProgram = false;
+                    Loop.addPerson = false;
+                    Loop.addMorePeople = false;
+                }
+                else if (userChoice.ToLower() == Value.validText[2, 0].ToLower()) //nulstil
+                {
+                    Loop.mainProgram = true;
+                    Loop.addPerson = false;
+                    Loop.addMorePeople = false;
+                }
+                else if (userChoice.ToLower() == Value.validText[1, 0].ToLower()) //tilføj
+                {
+                    Loop.addPerson = true;
+                }
+                else if (userChoice.ToLower() == Value.validText[0, 0].ToLower()) //udskriv
+                {
+                    //Loop.end = true;
+                    Loop.addPerson = false;
+                    Person.UdskrivPersonprofiler();
+                }
+
+                while (Loop.addPerson)
+                {
+                    Person.InstantiateResizePerson(); //Resize<T>(ref T[] ? array, int newSize); https://docs.microsoft.com/en-us/dotnet/api/system.array.resize?view=net-6.0
+                    Person.person[Counter.index] = Person.InstantiateAnExtraPerson(Person.person[Counter.index]); //Opret ny person
+                    Loop.addPerson = false;
+                }
+            } while (Loop.addMorePeople);
+
+        }
+
+        public static void UdskrivPersonprofiler()
         {
             Console.Clear();
-            Console.WriteLine("Udskriver samtlige personer og deres profiler.");
-            Console.WriteLine();
+            Console.WriteLine(Besked.udskrivProfil.ToUpper() + "\n");
             foreach (Person item in Person.person)
             {
                 Console.WriteLine($"{item.Navn}s profil:");
                 Console.WriteLine($"Tid:\t{item.Tid}\t\tBæredygtighed:\t{item.Bæredygtighed}\t\tØkonomi:\t{item.Økonomi}");
                 Console.WriteLine();
             }
+            Console.ReadLine();
         }
-
-        //        Array.Resize<Person>(ref person, counterPerson);  //Resize<T>(ref T[] ? array, int newSize); https://docs.microsoft.com/en-us/dotnet/api/system.array.resize?view=net-6.0
-        //        person[counterIndex] = InstantiateAPerson(person[counterIndex]);
-        //        Loop.addPerson = false;
-
-
 
     }//class Person
 }

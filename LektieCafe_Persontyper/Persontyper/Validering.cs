@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Persontyper
+namespace NPersontyper
 {
     internal class Validering
     {
@@ -49,17 +49,30 @@ namespace Persontyper
         public static string AddPersonStartOverOrQuit()
         {
             string? value = null;
-            string messageChoice = $"Vil du tilføje flere personer? \n(Ja = Tilføje endnu en person.\n(Nulstil = Nulstil og starte forfra)\n(Exit = Udskriv profilerne og Luk for programmet";
-            Console.WriteLine(messageChoice);
+
+            Console.WriteLine(Besked.options);
             do
             {
                 string? answer = Console.ReadLine();
-                if (answer.ToLower() == "ja" || answer.ToLower() == "nulstil" || answer.ToLower() == "exit") value = answer;
-                else Console.WriteLine(messageChoice);
+                if(TextExists(answer)) value = answer;    
             } while (value == null);
             return value;
+
+
+            static bool TextExists(string answer)
+            {
+                bool Exist = false;
+                for (int i = 0; i < 4; i++)
+                {
+                    if (answer.ToLower() == Value.validText[i, 0].ToLower())
+                    {
+                        Exist = true;
+                        break;
+                    }
+                }
+                return Exist;
+            }
+
         }
-
-
-    }
-}
+    }//class Validering
+}//namespace NPersontyper

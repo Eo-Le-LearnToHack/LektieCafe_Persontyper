@@ -4,13 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Persontyper
+namespace NPersontyper
 {
     internal class Loop
     {
-        public static bool main = true;
+        public static bool mainProgram = true;
         public static bool addPerson = true;
-        public static bool end = true;
-
+        public static bool addMorePeople = true;
     }
 }
