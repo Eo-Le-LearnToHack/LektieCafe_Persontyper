@@ -9,13 +9,13 @@ namespace NPersontyper
     public delegate void Vigtighed();
     internal class Person
     {
-        public string? Navn { get; set; }
-        public double barometer = 100;
+        private string? Navn { get; set; }
+        private double barometer = 100;
 
-        public double Tid { get; set; }
-        public double Bæredygtighed { get; set; }
-        public double Økonomi { get; set; }
-        public static Person[] person = new Person[Counter.person];
+        private double Tid { get; set; }
+        private double Bæredygtighed { get; set; }
+        private double Økonomi { get; set; }
+        private static Person[] person = new Person[Counter.person];
 
         public void NavnTildelt()
         {
@@ -72,24 +72,33 @@ namespace NPersontyper
             Console.ReadLine();
         }
 
+        public static Action Vigtighed; //DELEGATE METHOD ACTION
+        public static void VigtighedTilføj (Person p)
+        {
+            Vigtighed += p.NavnTildelt;
+            Vigtighed += p.TidTildelt;
+            Vigtighed += p.BæredygtighedTildelt;
+            Vigtighed += p.ØkonomiTildelt;
+        }
+        public static void VigtighedFjern(Person p)
+        {
+            Vigtighed -= p.NavnTildelt;
+            Vigtighed -= p.TidTildelt;
+            Vigtighed -= p.BæredygtighedTildelt;
+            Vigtighed -= p.ØkonomiTildelt;
+        }
+
+
         public static Person InstantiateAPerson(Person personX)
         {
             Console.WriteLine(Besked.førstePerson.ToUpper() + "\n");
             personX = new Person(); //Create an object of each person in the array  
-            Vigtighed personVigtighed = new Vigtighed(personX.NavnTildelt);
-            personVigtighed += personX.TidTildelt;
-            personVigtighed += personX.BæredygtighedTildelt;
-            personVigtighed += personX.ØkonomiTildelt;
-            //personX.NavnTildelt();
-            //personX.TidTildelt();
-            //personX.BæredygtighedTildelt();
-            //personX.ØkonomiTildelt();
-            personVigtighed();
-            Counter.person++;
-            Counter.index++;
+            VigtighedTilføj(personX);
+            Vigtighed(); //KALDER PÅ DELEGATE METODEN
+            VigtighedFjern(personX);
+            Counter.Incremental();
             return personX;
         }
-
         public static void InstantiateResizePerson()
         {
             Array.Resize<Person>(ref Person.person, Counter.person); //Resize<T>(ref T[] ? array, int newSize); https://docs.microsoft.com/en-us/dotnet/api/system.array.resize?view=net-6.0
@@ -101,12 +110,10 @@ namespace NPersontyper
         {
             Console.Clear();
             Console.WriteLine($"Tilføj person nr. {Counter.person}.");
-            personX.NavnTildelt();
-            personX.TidTildelt();
-            personX.BæredygtighedTildelt();
-            personX.ØkonomiTildelt();
-            Counter.person++;
-            Counter.index++;
+            VigtighedTilføj(personX);
+            Vigtighed(); //KALDER PÅ DELEGATE METODEN
+            VigtighedFjern(personX);
+            Counter.Incremental();
             Console.ReadLine();
             return personX;
         }
@@ -117,38 +124,26 @@ namespace NPersontyper
             {
                 Console.Clear();
                 string? userChoice = Validering.AddPersonStartOverOrQuit();
-                if (userChoice.ToLower() == Value.validText[3, 0].ToLower()) //luk
-                {
-                    Loop.mainProgram = false;
-                    Loop.addPerson = false;
-                    Loop.addMorePeople = false;
-                }
-                else if (userChoice.ToLower() == Value.validText[2, 0].ToLower()) //nulstil
-                {
-                    Loop.mainProgram = true;
-                    Loop.addPerson = false;
-                    Loop.addMorePeople = false;
-                }
-                else if (userChoice.ToLower() == Value.validText[1, 0].ToLower()) //tilføj
-                {
-                    Loop.addPerson = true;
-                }
-                else if (userChoice.ToLower() == Value.validText[0, 0].ToLower()) //udskriv
-                {
-                    //Loop.end = true;
-                    Loop.addPerson = false;
-                    Person.UdskrivPersonprofiler();
-                }
-
-                while (Loop.addPerson)
-                {
-                    Person.InstantiateResizePerson(); //Resize<T>(ref T[] ? array, int newSize); https://docs.microsoft.com/en-us/dotnet/api/system.array.resize?view=net-6.0
-                    Person.person[Counter.index] = Person.InstantiateAnExtraPerson(Person.person[Counter.index]); //Opret ny person
-                    Loop.addPerson = false;
-                }
+                if (userChoice.ToLower() == Value.validText[3, 0].ToLower())        Loop.CloseAll();            //luk
+                else if (userChoice.ToLower() == Value.validText[2, 0].ToLower())   Loop.StartOver();           //nulstil
+                else if (userChoice.ToLower() == Value.validText[1, 0].ToLower())   Loop.AddPerson();           //tilføj
+                else if (userChoice.ToLower() == Value.validText[0, 0].ToLower())   Loop.UdskrivPerson();       //udskriv
+                if (Loop.udskrivPerson) Person.UdskrivPersonprofiler();
+                if (Loop.addPerson) AddPerson();
             } while (Loop.addMorePeople);
 
         }
+
+
+
+        public static void AddPerson()
+        {
+                Person.InstantiateResizePerson(); //Resize<T>(ref T[] ? array, int newSize); https://docs.microsoft.com/en-us/dotnet/api/system.array.resize?view=net-6.0
+                Person.person[Counter.index] = Person.InstantiateAnExtraPerson(Person.person[Counter.index]); //Opret ny person
+                Loop.addPerson = false;
+        }
+
+
 
         public static void UdskrivPersonprofiler()
         {
@@ -161,6 +156,7 @@ namespace NPersontyper
                 Console.WriteLine();
             }
             Console.ReadLine();
+            Loop.udskrivPerson = false;
         }
 
     }//class Person

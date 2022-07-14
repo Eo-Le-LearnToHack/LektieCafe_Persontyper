@@ -11,10 +11,8 @@ namespace NPersontyper
         public static void Parameter()
         {
             Console.Clear();
-            Loop.addPerson = true;
-            Loop.addMorePeople = true;
-            Counter.person = 1;
-            Counter.index = 0;
+            Loop.Reset();
+            Counter.Reset();
         }
     }
 }

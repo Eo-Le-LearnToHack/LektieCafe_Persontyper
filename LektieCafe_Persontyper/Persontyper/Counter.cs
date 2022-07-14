@@ -10,5 +10,21 @@ namespace NPersontyper
     {
         public static int person = 1;
         public static int index = 0;
+
+        public static void Incremental ()
+        {
+            person++;
+            index++;
+        }
+
+        public static void Reset()
+        {
+            person = 1;
+            index = 0;
+        }
+
     }
+
+
+
 }
