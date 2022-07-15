@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 
 namespace NPersontyper
 {
-    public delegate void Vigtighed();
     internal class Person
     {
         private string? Navn { get; set; }
@@ -63,7 +62,6 @@ namespace NPersontyper
             Console.WriteLine();
         }
 
-
         public static void AddFirstPerson()
         {
             Person.person = new Person[Counter.person];
@@ -80,7 +78,7 @@ namespace NPersontyper
             Vigtighed += p.BæredygtighedTildelt;
             Vigtighed += p.ØkonomiTildelt;
         }
-        public static void VigtighedFjern(Person p)
+        public static void VigtighedNulstil(Person p)
         {
             Vigtighed -= p.NavnTildelt;
             Vigtighed -= p.TidTildelt;
@@ -88,14 +86,13 @@ namespace NPersontyper
             Vigtighed -= p.ØkonomiTildelt;
         }
 
-
         public static Person InstantiateAPerson(Person personX)
         {
             Console.WriteLine(Besked.førstePerson.ToUpper() + "\n");
             personX = new Person(); //Create an object of each person in the array  
             VigtighedTilføj(personX);
             Vigtighed(); //KALDER PÅ DELEGATE METODEN
-            VigtighedFjern(personX);
+            VigtighedNulstil(personX);
             Counter.Incremental();
             return personX;
         }
@@ -105,14 +102,13 @@ namespace NPersontyper
             Person.person[Counter.index] = new Person();
         }
  
-
         public static Person InstantiateAnExtraPerson(Person personX)
         {
             Console.Clear();
             Console.WriteLine($"Tilføj person nr. {Counter.person}.");
             VigtighedTilføj(personX);
             Vigtighed(); //KALDER PÅ DELEGATE METODEN
-            VigtighedFjern(personX);
+            VigtighedNulstil(personX);
             Counter.Incremental();
             Console.ReadLine();
             return personX;
@@ -123,18 +119,15 @@ namespace NPersontyper
             do
             {
                 Console.Clear();
-                string? userChoice = Validering.AddPersonStartOverOrQuit();
-                if (userChoice.ToLower() == Value.validText[3, 0].ToLower())        Loop.CloseAll();            //luk
-                else if (userChoice.ToLower() == Value.validText[2, 0].ToLower())   Loop.StartOver();           //nulstil
-                else if (userChoice.ToLower() == Value.validText[1, 0].ToLower())   Loop.AddPerson();           //tilføj
-                else if (userChoice.ToLower() == Value.validText[0, 0].ToLower())   Loop.UdskrivPerson();       //udskriv
+                string? userChoice = Validering.OptionChoosed();
+                if (userChoice.ToLower() == Besked.validTextInput[3, 0].ToLower())        Loop.StatementAllParameters("CloseAll");        //luk
+                else if (userChoice.ToLower() == Besked.validTextInput[2, 0].ToLower())   Loop.StatementAllParameters("StartOver");       //nulstil
+                else if (userChoice.ToLower() == Besked.validTextInput[1, 0].ToLower())   Loop.StatementAllParameters("AddPerson");       //tilføj
+                else if (userChoice.ToLower() == Besked.validTextInput[0, 0].ToLower())   Loop.StatementAllParameters("UdskrivPerson");   //udskriv
                 if (Loop.udskrivPerson) Person.UdskrivPersonprofiler();
                 if (Loop.addPerson) AddPerson();
             } while (Loop.addMorePeople);
-
         }
-
-
 
         public static void AddPerson()
         {
@@ -142,22 +135,22 @@ namespace NPersontyper
                 Person.person[Counter.index] = Person.InstantiateAnExtraPerson(Person.person[Counter.index]); //Opret ny person
                 Loop.addPerson = false;
         }
-
-
-
         public static void UdskrivPersonprofiler()
         {
+            Style font = new();
             Console.Clear();
             Console.WriteLine(Besked.udskrivProfil.ToUpper() + "\n");
             foreach (Person item in Person.person)
             {
-                Console.WriteLine($"{item.Navn}s profil:");
+                Console.WriteLine($"{font.UNDERLINE}{item.Navn}s profil:{font.UNDERLINE_UNDO}");
+                Console.BackgroundColor = ConsoleColor.DarkBlue;
                 Console.WriteLine($"Tid:\t{item.Tid}\t\tBæredygtighed:\t{item.Bæredygtighed}\t\tØkonomi:\t{item.Økonomi}");
+                Console.WriteLine(Besked.prikker100);
                 Console.WriteLine();
             }
             Console.ReadLine();
             Loop.udskrivPerson = false;
         }
-
     }//class Person
-}
+    public delegate void Vigtighed();
+}//namespace NPersontyper

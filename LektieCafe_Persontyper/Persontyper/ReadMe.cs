@@ -24,5 +24,5 @@ https://en.wikipedia.org/wiki/Greta_Thunberg
 Jeff Bezos (30,0,70)
 https://en.wikipedia.org/wiki/Jeff_Bezos
 ";
-    }
-}
+    }//class ReadMe
+}//namespace NPersontyper

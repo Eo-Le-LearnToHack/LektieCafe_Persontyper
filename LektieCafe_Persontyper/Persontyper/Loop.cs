@@ -13,45 +13,23 @@ namespace NPersontyper
         public static bool addMorePeople = true;
         public static bool udskrivPerson = true;
 
-        public static void Reset()
+        public static Statement StatementBool = AllParameters;
+        public static void StatementAllParameters(string whichLoop)
         {
-            mainProgram = true;
-            addPerson = true;
-            addMorePeople = true;
-            udskrivPerson = true;
+            if (whichLoop.ToLower() == "reset")                 StatementBool(true, true, true, true);
+            else if (whichLoop.ToLower() == "closeall")         StatementBool(false, false, false, false);
+            else if (whichLoop.ToLower() == "startover")        StatementBool(true, false, false, false);
+            else if (whichLoop.ToLower() == "addperson")        StatementBool(true, true, true, false);
+            else if (whichLoop.ToLower() == "udskrivperson")    StatementBool(true, false, true, true);
         }
 
-        public static void CloseAll()
+        public static void AllParameters(bool mainProgramO, bool addPersonO, bool addMorePeopleO, bool udskrivPersonO)
         {
-            mainProgram = false;
-            addPerson = false;
-            addMorePeople = false;
-            udskrivPerson = false;
+            mainProgram = mainProgramO;
+            addPerson = addPersonO;
+            addMorePeople = addMorePeopleO;
+            udskrivPerson = udskrivPersonO;
         }
-
-        public static void StartOver()
-        {
-            mainProgram = true;
-            addPerson = false;
-            addMorePeople = false;
-            udskrivPerson = false;
-        }
-
-        public static void AddPerson()
-        {
-            mainProgram = true;
-            addPerson = true;
-            addMorePeople = true;
-            udskrivPerson = false;
-        }
-
-        public static void UdskrivPerson()
-        {
-            mainProgram = true;
-            addPerson = false;
-            addMorePeople = true;
-            udskrivPerson = true;
-        }
-
-    }
-}
+    }//class Loop
+    public delegate void Statement(bool a, bool b, bool c, bool d);
+}//namespace NPersontyper

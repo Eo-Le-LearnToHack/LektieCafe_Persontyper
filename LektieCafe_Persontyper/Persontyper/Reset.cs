@@ -10,9 +10,10 @@ namespace NPersontyper
     {
         public static void Parameter()
         {
+            Console.BackgroundColor = ConsoleColor.DarkBlue;
             Console.Clear();
-            Loop.Reset();
+            Loop.StatementAllParameters("Reset");
             Counter.Reset();
         }
-    }
-}
+    }//class Reset
+}//namespace NPersontyper

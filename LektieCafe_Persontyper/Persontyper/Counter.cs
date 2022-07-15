@@ -22,9 +22,5 @@ namespace NPersontyper
             person = 1;
             index = 0;
         }
-
-    }
-
-
-
-}
+    }//class Counter
+}//namespace NPersontyper

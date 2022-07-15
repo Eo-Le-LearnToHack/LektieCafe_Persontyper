@@ -25,10 +25,7 @@ namespace NPersontyper
                         value = null;
                     }
                 }
-                else
-                {
-                    Console.WriteLine(messageChoice);
-                }
+                else Console.WriteLine(messageChoice);
             } while (value == null);
             return (double)value;
         }
@@ -36,25 +33,25 @@ namespace NPersontyper
         public static string Text()
         {
             string? value = null;
-            string messageChoice = $"Du skal angive et navn.";
             do
             {
                 string? answer = Console.ReadLine();
-                if (answer == null || answer.Trim() == "") Console.WriteLine(messageChoice);
+                if (answer == null || answer.Trim() == "") Console.WriteLine(Besked.angivNavn);
                 else value = answer;
             } while (value == null);
             return value;
         }
 
-        public static string AddPersonStartOverOrQuit()
+        public static string OptionChoosed()
         {
             string? value = null;
 
-            Console.WriteLine(Besked.options);
+            Console.WriteLine($"{Besked.vælg.ToUpper()} \n{Besked.options}");
             do
             {
                 string? answer = Console.ReadLine();
-                if(TextExists(answer)) value = answer;    
+                if (TextExists(answer)) value = answer;
+                else Console.WriteLine($"{Besked.vælgIgen.ToUpper()} \n{Besked.options}");
             } while (value == null);
             return value;
 
@@ -64,7 +61,7 @@ namespace NPersontyper
                 bool Exist = false;
                 for (int i = 0; i < 4; i++)
                 {
-                    if (answer.ToLower() == Value.validText[i, 0].ToLower())
+                    if (answer.ToLower() == Besked.validTextInput[i, 0].ToLower())
                     {
                         Exist = true;
                         break;
@@ -72,7 +69,6 @@ namespace NPersontyper
                 }
                 return Exist;
             }
-
         }
     }//class Validering
 }//namespace NPersontyper
