@@ -8,7 +8,7 @@ namespace NPersontyper
         {
             do
             {
-                Reset.Parameter();          //NULSTILLER ALLE PARAMETRENE
+                Reset.Parameter();          //NULSTILLER PARAMETRENE
                 Person.AddFirstPerson();
                 Person.AddMorePeople();
             } while (Loop.mainProgram);
